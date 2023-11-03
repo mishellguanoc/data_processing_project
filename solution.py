@@ -29,3 +29,13 @@ promedio_edad_no_perecidos = no_perecidos["age"].mean()
 
 print("Promedio de edades de las personas que perecieron:", promedio_edad_perecidos)
 print("Promedio de edades de las personas que no perecieron:", promedio_edad_no_perecidos)
+
+# Verificar los tipos de datos
+print(df.dtypes)
+print(df.info())
+
+#Calcular la cantidad de hombres fumadores vs mujeres fumadoras
+# Agrupar por género y contar la cantidad de fumadores
+fumadores_por_genero = df.groupby('gender')['smoking'].sum()
+
+print(fumadores_por_genero)
