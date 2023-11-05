@@ -1,41 +1,26 @@
 from datasets import load_dataset
 import numpy as np
+import requests
+import os
 
+def descargar_datos(url, nombre_archivo):
+     # Realizar una solicitud GET para descargar los datos
+    response = requests.get(url)
+    
+    # Verificar si la solicitud fue exitosa
+    if response.status_code == 200:
+        # Escribir el contenido de la respuesta en un archivo CSV
+        with open(nombre_archivo, 'wb') as archivo:
+            archivo.write(response.content)
+        print(f'Los datos se han descargado y guardado como {nombre_archivo}')
+    else:
+        print(f'Error al descargar los datos. Código de estado: {response.status_code}')
 
-#Cargar el dataset
+# URL de los datos
+url_datos = 'https://huggingface.co/datasets/mstz/heart_failure/raw/main/heart_failure_clinical_records_dataset.csv' 
 
-dataset = load_dataset("mstz/heart_failure")
-data = dataset["train"]
+# Nombre del archivo CSV en el que se guardarán los datos
+archivo_csv = 'datos.csv'
 
-#Convertir data a un DataFrame
-df = pd.DataFrame(data)
-
-#Acceder a la lista de edades y convertirla a un arreglo Numpy
-edades = data["age"]
-edades_np = np.array(edades)
-
-#Calcular el promedio de edades
-promedio_edad = np.mean(edades_np)
-
-print("El promedio es:", promedio_edad, "años.")
-
-# Filtrar las filas en funcion de "is_dead"
-perecidos = df[df["is_dead"] == 1]
-no_perecidos = df[df["is_dead"] == 0]
-
-# Calcular el promedio de edades para cada dataset
-promedio_edad_perecidos = perecidos["age"].mean()
-promedio_edad_no_perecidos = no_perecidos["age"].mean()
-
-print("Promedio de edades de las personas que perecieron:", promedio_edad_perecidos)
-print("Promedio de edades de las personas que no perecieron:", promedio_edad_no_perecidos)
-
-# Verificar los tipos de datos
-print(df.dtypes)
-print(df.info())
-
-#Calcular la cantidad de hombres fumadores vs mujeres fumadoras
-# Agrupar por género y contar la cantidad de fumadores
-fumadores_por_genero = df.groupby('gender')['smoking'].sum()
-
-print(fumadores_por_genero)
+# Llama a la función para descargar y guardar los datos
+descargar_datos(url_datos, archivo_csv)
