@@ -17,15 +17,6 @@ def descargar_datos(url, nombre_archivo):
         print(f'Error al descargar los datos. Código de estado: {response.status_code}')
 
 
-# URL de los datos
-url_datos = 'https://huggingface.co/datasets/mstz/heart_failure/raw/main/heart_failure_clinical_records_dataset.csv' 
-
-# Nombre del archivo CSV en el que se guardarán los datos
-archivo_txt = 'respuesta.txt'
-
-# Llama a la función para descargar y guardar los datos
-descargar_datos(url_datos, archivo_txt)
-
 def limpiar_y_preparar_datos(dataframe):
     # Verificar que no existan valores faltantes
     if dataframe.isnull().values.any():
@@ -54,10 +45,3 @@ def limpiar_y_preparar_datos(dataframe):
     dataframe.to_csv('datos_limpios.csv', index=False)
     print("Datos limpios guardados como 'datos_limpios.csv'.")
 
-
-# Cargar los datos desde el archivo CSV descargado
-archivo_csv = 'respuesta.txt'
-dataframe = pd.read_csv(archivo_csv)
-
-# Llamar a la función de limpieza y preparación de datos
-limpiar_y_preparar_datos(dataframe)
