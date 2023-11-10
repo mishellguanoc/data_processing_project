@@ -44,3 +44,39 @@ ax.set_xticklabels(etiquetas)
 ax.legend()
 
 plt.show()
+
+# PARTE 8: Gráficas de torta, distribuciones 2
+valores_anémicos = df['anaemia'].value_counts()
+valores_diabéticos = df['diabetes'].value_counts()
+valores_fumadores = df['smoking'].value_counts()
+valores_muertos = df['DEATH_EVENT'].value_counts()
+
+print("Valor de la anaemia: ", valores_anémicos)
+print("Valor de la diabetes: ", valores_diabéticos)
+print("Valor del fumar: ", valores_fumadores)
+print("Valor de las muertes: ", valores_muertos)
+
+
+anemicos = 'Si','No'
+diabeticos =  'Si','No'
+fumadores =  'Si','No'
+muertos =  'Si','No'
+
+# Configuración de colores
+colores = [ '#FF69B4', '#87CEEB']
+
+# Crear las gráficas de torta
+fig, axs = plt.subplots(1, 4, figsize=(15, 5))
+axs[0].pie(valores_anémicos, labels=anemicos, autopct='%1.1f%%', startangle=90, colors=colores)
+axs[1].pie(valores_diabéticos, labels=diabeticos, autopct='%1.1f%%', startangle=90, colors=colores)
+axs[2].pie(valores_fumadores, labels=fumadores, autopct='%1.1f%%', startangle=90, colors=colores)
+axs[3].pie(valores_muertos, labels=muertos, autopct='%1.1f%%', startangle=90, colors=colores)
+
+# Ajustar los títulos de las gráficas
+axs[0].set_title('Anémicos')
+axs[1].set_title('Diabéticos')
+axs[2].set_title('Fumadores')
+axs[3].set_title('Muertos')
+
+# Mostrar la gráfica
+plt.show()
