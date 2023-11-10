@@ -80,3 +80,61 @@ axs[3].set_title('Muertos')
 
 # Mostrar la gráfica
 plt.show()
+
+# PARTE 9: Gráficas de dispersión 3D
+import plotly.graph_objects as go
+from sklearn.manifold import TSNE
+import plotly.express as px
+
+df = pd.read_csv("datos_limpios.csv")
+
+dfnew = df.drop(columns=["DEATH_EVENT", "edad_categorizada"])
+
+X = dfnew.values
+
+np.savetxt("X.csv", X, delimiter=",")
+
+y = df["DEATH_EVENT"]
+
+y = y.ravel()
+
+np.savetxt("y.csv", y, delimiter=",")
+
+X_embedded = TSNE(
+    n_components=3,
+    learning_rate='auto',
+    init='random',
+    perplexity=3
+).fit_transform(X)
+
+y1 = df["DEATH_EVENT"].replace({1: "Fallecido", 0: "Vivo"})
+
+# Definir colores específicos para "Fallecido" y "Vivo"
+color_dict = {"Fallecido": "red", "Vivo": "green"}
+
+fig = px.scatter_3d(
+    x=X_embedded[:, 0],
+    y=X_embedded[:, 1],
+    z=X_embedded[:, 2],
+    color=y1,
+    color_discrete_map=color_dict,  # Utiliza el diccionario de colores
+    opacity=0.8,
+)
+
+# Añadir título y leyenda a los ejes
+fig.update_layout(
+    title="Visualización 3D de Datos",
+    scene=dict(
+        xaxis_title="Eje X",
+        yaxis_title="Eje Y",
+        zaxis_title="Eje Z"
+    )
+)
+
+# Actualizar la leyenda para quitar el título de color
+fig.update_traces(
+    showlegend=True,
+    selector=dict(type='scatter3d')
+)
+
+fig.show()
